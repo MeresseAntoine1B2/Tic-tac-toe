@@ -124,7 +124,7 @@ while not termine:
         print("Félicitations joueur ", joueur)
     elif pleine:
         afficher_grille(plateau)
-        print("Égalité")
+        print("Bhou, vous êtes même pas capables de gagner ...")
     else:
         if joueur == "X":
             joueur = "O"
