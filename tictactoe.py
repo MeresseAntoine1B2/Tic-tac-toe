@@ -1,8 +1,4 @@
-plateau = {
-    "A" : [None for _ in range(3)],
-    "B" : [None for _ in range(3)],
-    "C" : [None for _ in range(3)]
-}
+import os
 
 def afficher_grille(plateau:dict) -> None:
     """Fonction qui affiche la grille du morpion
@@ -10,6 +6,7 @@ def afficher_grille(plateau:dict) -> None:
     Args:
         plateau (dict): Un plateau de jeu
     """
+    os.system("clear")
     print(" \t|\t0\t|\t1\t|\t2\t|")
     print("---------------------------------------------------------")
     for cle in plateau:
@@ -29,7 +26,7 @@ def jouer_coup(plateau:dict, joueur:str, coup:str) -> None:
         joueur (str): "O" ou "X"
         coup (str): Coordonnées de la forme "A1"
     """
-    plateau[coup[0]][int(coup[1])] = joueur
+    plateau[coup[0].upper()][int(coup[1])] = joueur
     
 def est_coup_valide(plateau:dict, coup:str) -> bool:
     """Fonction qui vérifie si un coup est valide
@@ -98,3 +95,38 @@ def est_pleine(plateau:dict) -> bool:
             if case == None:
                 return False
     return True
+
+plateau = {
+    "A" : [None for _ in range(3)],
+    "B" : [None for _ in range(3)],
+    "C" : [None for _ in range(3)]
+}
+
+termine = False
+joueur = "X"
+
+while not termine:
+    afficher_grille(plateau)
+    
+    coup = input("Entrez un coup : (Joueur = " + joueur + " ) ")
+    # On vérifie si le coup est valide, sinon on redemande un coup
+    while not est_coup_valide(plateau, coup):
+        coup = input("Entrez un coup (Valide cette fois): ")
+    
+    jouer_coup(plateau, joueur, coup)
+    
+    pleine = est_pleine(plateau)
+    gagnante = est_gagnante(plateau)
+    termine = pleine or gagnante
+    
+    if gagnante:
+        afficher_grille(plateau)
+        print("Félicitations joueur ", joueur)
+    elif pleine:
+        afficher_grille(plateau)
+        print("Égalité")
+    else:
+        if joueur == "X":
+            joueur = "O"
+        else:
+            joueur = "X"
